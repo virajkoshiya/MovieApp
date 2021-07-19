@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<!--    <item-->
+<!--        android:id="@+id/action_sort_by_popular_movies"-->
+<!--        android:orderInCategory="1"-->
+<!--        android:title="POPULAR"-->
+<!--        />-->
+
+<!--    <item-->
+<!--        android:id="@+id/action_sort_by_top_rated"-->
+<!--        android:orderInCategory="2"-->
+<!--        android:title="@string/settings_order_by_top_rated_label"-->
+<!--        app:showAsAction="never"/>-->
+
+    <item
+        android:onClick="menufavorites"
+        android:id="@+id/menufavorites"
+        android:orderInCategory="3"
+        android:title="FAVOURITES"
+        />
+</menu>
