@@ -1,10 +1,12 @@
 package com.example.movie;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,7 +48,8 @@ public class Adapter_movie extends RecyclerView.Adapter<Adapter_movie.viewholder
         holder.text.setText(movie_constructor.getOriginal_title());
         holder.date.setText(movie_constructor.getRelease_date());
 
-       String image;
+
+        String image;
 
         image=movie_constructor.getPoster_path();
 
@@ -55,7 +58,26 @@ public class Adapter_movie extends RecyclerView.Adapter<Adapter_movie.viewholder
         Picasso.get().load("https://image.tmdb.org/t/p/w185/"+image).into(holder.imgage);
       // Picasso.get().load(movie_constructor.getPoster_path()).into(holder.imgage);
 
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(),Movie_details.class);
+                String image;
 
+
+
+                intent.putExtra("mname",String.valueOf(movie_constructor.getOriginal_title()));
+                intent.putExtra("mdate",String.valueOf(movie_constructor.getRelease_date()));
+                intent.putExtra("mposter",String.valueOf(movie_constructor.getPoster_path()));
+                intent.putExtra("mlanguage",String.valueOf(movie_constructor.getOriginal_language()));
+                intent.putExtra("mvote",String.valueOf(movie_constructor.getVote_average()));
+                intent.putExtra("moverview",String.valueOf(movie_constructor.getOverview()));
+
+
+               // intent.putExtra("image",String.valueOf(image));
+                v.getContext().startActivity(intent);
+            }
+        });
 
     }
 
@@ -64,10 +86,17 @@ public class Adapter_movie extends RecyclerView.Adapter<Adapter_movie.viewholder
         return this.arrayList.size();
     }
 
+    public void filterlist(ArrayList<movie_constructor> filteredlist)
+    {
+        arrayList=filteredlist;
+        notifyDataSetChanged();
+    }
+
     public class viewholder extends RecyclerView.ViewHolder{
 
         private AppCompatImageView imgage;
         private TextView text,date;
+        private LinearLayout linearLayout;
 
 
         public viewholder(@NonNull @NotNull View itemView) {
@@ -77,6 +106,7 @@ public class Adapter_movie extends RecyclerView.Adapter<Adapter_movie.viewholder
             imgage = (AppCompatImageView) itemView.findViewById(R.id.img);
             text = (TextView) itemView.findViewById(R.id.mname);
             date=(TextView) itemView.findViewById(R.id.date);
+            linearLayout=(LinearLayout)itemView.findViewById(R.id.layclick);
 
 
         }
