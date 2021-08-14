@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,13 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Adapter_movie extends RecyclerView.Adapter<Adapter_movie.viewholder> {
 
@@ -62,9 +59,6 @@ public class Adapter_movie extends RecyclerView.Adapter<Adapter_movie.viewholder
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(),Movie_details.class);
-                String image;
-
-
 
                 intent.putExtra("mname",String.valueOf(movie_constructor.getOriginal_title()));
                 intent.putExtra("mdate",String.valueOf(movie_constructor.getRelease_date()));

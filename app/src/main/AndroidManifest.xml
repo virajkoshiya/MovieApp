@@ -11,10 +11,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Movie">
-        <activity android:name=".Movie_details"
-            android:theme="@style/Theme.Movie_heading1">
 
-        </activity>
+        <activity
+            android:name=".Movie_details_fav"
+            android:exported="true"
+            android:theme="@style/Theme.Movie_heading1"/>
+        <activity
+            android:name=".favlist"
+            android:exported="true"
+            android:parentActivityName=".Recycle_view"/>
+        <activity
+            android:name=".Movie_details"
+            android:theme="@style/Theme.Movie_heading1"
+            android:parentActivityName=".Recycle_view"></activity>
         <activity
             android:name=".Recycle_view"
             android:theme="@style/Theme.Movie_heading">
@@ -24,7 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

@@ -1,9 +1,6 @@
 package com.example.movie;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.content.res.ResourcesCompat;
-
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,14 +9,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 public class Movie_details extends AppCompatActivity {
 
+
+    private static final String MOVIE_BUNDLE_KEY = "movie";
+    private static final String MOVIE_STATE_KEY = "key";
     DBmovies dBmovies;
     String smname,smdate,sposter,slanguage,svote,soverview;
-
+String fsmname,fsmdate;
     private TextView mname,titel;
     private TextView mlanguage;
     private TextView mpopularity;
@@ -27,23 +34,27 @@ public class Movie_details extends AppCompatActivity {
     private TextView mvote;
     private TextView moverview;
     private ImageView poster;
-
+    private RecyclerView recyclerviewfav;
     private AppCompatImageView back;
+    Adapter_movie_fav adapter_movie_fav;
 
-    private FloatingActionButton fabFavorites;
+     FloatingActionButton fabFavorites;
     private Boolean mIsFavorite;
+Context context;
 
-
-
+    ImageView empty_imageview;
+    TextView no_data;
+    ArrayList<String> id,name, date, pposter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
 
+
+
         mname = (TextView) findViewById(R.id.mname);
         mlanguage = (TextView) findViewById(R.id.mlanguage);
-       // mpopularity = (TextView) findViewById(R.id.mpopularity);
         mreleasedate = (TextView) findViewById(R.id.mreleasedate);
         mvote = (TextView) findViewById(R.id.mvote);
         moverview = (TextView) findViewById(R.id.moverview);
@@ -54,12 +65,19 @@ public class Movie_details extends AppCompatActivity {
 
         fabFavorites = (FloatingActionButton) findViewById(R.id.fab_favorites);
 
+
+
         smname=getIntent().getStringExtra("mname");
         smdate=getIntent().getStringExtra("mdate");
         sposter=getIntent().getStringExtra("mposter");
         slanguage=getIntent().getStringExtra("mlanguage");
         svote=getIntent().getStringExtra("mvote");
         soverview=getIntent().getStringExtra("moverview");
+
+
+        fsmname=getIntent().getStringExtra("fmname");
+        fsmdate=getIntent().getStringExtra("fmdate");
+       // fsposter=getIntent().getStringExtra("mposter");
 
         dBmovies = new DBmovies(this);
 
@@ -71,6 +89,49 @@ public class Movie_details extends AppCompatActivity {
         moverview.setText("Overview : "+soverview);
         Picasso.get().load("https://image.tmdb.org/t/p/w185/"+sposter).into(poster);
 
+//made by me
+
+        fabFavorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String dsname=smname;
+                String dmdate=smdate;
+                String dsposter=sposter;
+                String dslanguage=slanguage;
+                String dsvote=svote;
+                String dsoverview=soverview;
+
+               Boolean result = dBmovies.insert_data(smname,smdate,sposter,slanguage,svote,soverview);
+
+        if (result==true){
+            Toast.makeText(Movie_details.this, "Add to favouritelist", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(Movie_details.this, "Not added ", Toast.LENGTH_SHORT).show();
+        }
+
+            }
+        });
+
+
+//        if(savedInstanceState != null) {
+//            // Get movie from previous state
+//          //  mMovie = savedInstanceState.getParcelable(MOVIE_BUNDLE_KEY);
+//            mIsFavorite = savedInstanceState.getBoolean(MOVIE_STATE_KEY);
+//        }
+//        else {
+//            // Get movie from intent
+//           // mMovie = getIntent().getParcelableExtra(MOVIE_BUNDLE_KEY);
+//            mIsFavorite = false;
+//        }
+
+
+      //  initViewModel();
+
+
+
+       // populateMovieUI();
+     //   setColorFavoriteButton();
 
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -81,65 +142,165 @@ public class Movie_details extends AppCompatActivity {
             }
         });
 
-        if(savedInstanceState != null) {
-            // Get movie from previous state
-           // mMovie = savedInstanceState.getParcelable(MOVIE_BUNDLE_KEY);
-           // mIsFavorite = savedInstanceState.getBoolean(MOVIE_STATE_KEY);
-        }
-        else {
-            // Get movie from intent
-          //  mMovie = getIntent().getParcelableExtra(MOVIE_BUNDLE_KEY);
-            mIsFavorite = false;
-        }
+//        if(savedInstanceState != null) {
+//            // Get movie from previous state
+//            mMovie = savedInstanceState.getParcelable(MOVIE_BUNDLE_KEY);
+//            mIsFavorite = savedInstanceState.getBoolean(MOVIE_STATE_KEY);
+//        }
+//        else {
+//            // Get movie from intent
+//            mMovie = getIntent().getParcelableExtra(MOVIE_BUNDLE_KEY);
+//            mIsFavorite = false;
+//        }
 
-        setColorFavoriteButton();
+        //gith method
 
+//        fabFavorites.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String dsname=smname;
+//                String dmdate=smdate;
+//                String dsposter=sposter;
+//                String dslanguage=slanguage;
+//                String dsvote=svote;
+//                String dsoverview=soverview;
+//
+//              //  Boolean result = dBmovies.insert_data(smname,smdate,sposter,slanguage,svote,soverview);
+//
+//
+//            {
+//
+//                //    AppExecutors task = AppExecutors.getInstance();
+//
+//                    if (mIsFavorite) {
+//                        mIsFavorite = false;
+//                        setColorFavoriteButton();
+////remove from database
+//                        DBmovies DB = new DBmovies(context);
+//                        String nameTXT = smname;
+//                         DB.deletedata(nameTXT);
+//
+//
+//                        Toast.makeText(Movie_details.this,
+//                                "Successfully removed from favorites", Toast.LENGTH_SHORT).show();
+//                    }
+//                    else {
+//                        mIsFavorite = true;
+//                        setColorFavoriteButton();
+//                        Boolean result = dBmovies.insert_data(smname,smdate,sposter,slanguage,svote,soverview);
+//
+//                        Toast.makeText(Movie_details.this,
+//                                "Successfully added to favorites", Toast.LENGTH_SHORT).show();
+//
+//                    }
+//
+//                }
+//
+//            }
+//        });
+//
+//
+//
     }
 
 
 
-    public void addOrRemoveFavorites(View view) {
 
-  //      AppExecutors task = AppExecutors.getInstance();
-
-        if (mIsFavorite) {
-            mIsFavorite = false;
-            setColorFavoriteButton();
-
+//    private void initViewModel() {
+//
+//        if (mMovie == null) return;
+//
+//        MovieDetailViewModelFactory factory =
+//                new MovieDetailViewModelFactory(MovieDatabase.getInstance(Movie_details.this), mMovie.getMovieId());
+//      //  mViewModel = ViewModelProvider.of(this, factory).get(MovieDetailViewModel.class);
+//        mViewModel.getMovie().observe(this, new Observer<Movie>() {
+//            @Override
+//            public void onChanged(@Nullable Movie movie) {
+//                if(movie != null) {
+//                    mIsFavorite = true;
+//                    setColorFavoriteButton();
+//                }
+//            }
+//        });
+//    }
+//
+//
+//    public void addOrRemoveFavorites() {
+//
+//        AppExecutors task = AppExecutors.getInstance();
+//
+//        if (mIsFavorite) {
+//            mIsFavorite = false;
+//            setColorFavoriteButton();
+//
 //            task.diskIO().execute(new Runnable() {
 //                @Override
 //                public void run() {
 //                    mDb.movieDao().delete(mMovie);
 //                }
 //            });
-            Toast.makeText(Movie_details.this,
-                    "Successfully removed from favorites", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            mIsFavorite = true;
-            setColorFavoriteButton();
-
-
-
-            smname=getIntent().getStringExtra("dmname");
-            smdate=getIntent().getStringExtra("dmdate");
-            sposter=getIntent().getStringExtra("dmposter");
-
-            dBmovies.insert_data(smname,smdate,sposter);
-
+//            Toast.makeText(Movie_details.this,
+//                    "Successfully removed from favorites", Toast.LENGTH_SHORT).show();
+//        }
+//        else {
+//            mIsFavorite = true;
+//            setColorFavoriteButton();
+//
 //            task.diskIO().execute(new Runnable() {
 //                @Override
 //                public void run() {
 //                    mDb.movieDao().insert(mMovie);
 //                }
 //            });
-            Toast.makeText(Movie_details.this,
-                    "Successfully added to favorites", Toast.LENGTH_SHORT).show();
-
-        }
-
-    }
-
+//            Toast.makeText(Movie_details.this,
+//                    "Successfully added to favorites", Toast.LENGTH_SHORT).show();
+//
+//        }
+//
+//    }
+//
+//    public void addOrRemoveFavorites(View view) {
+//
+//        AppExecutors task = AppExecutors.getInstance();
+//
+//        if (mIsFavorite) {
+//            mIsFavorite = false;
+//            setColorFavoriteButton();
+//
+//            task.diskIO().execute(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mDb.movieDao().delete(mMovie);
+//                }
+//            });
+//            Toast.makeText(Movie_details.this,
+//                    "Successfully removed from favorites", Toast.LENGTH_SHORT).show();
+//        }
+//        else {
+//            mIsFavorite = true;
+//            setColorFavoriteButton();
+//
+//
+//
+//            smname=getIntent().getStringExtra("dmname");
+//            smdate=getIntent().getStringExtra("dmdate");
+//            sposter=getIntent().getStringExtra("dmposter");
+//
+//            dBmovies.insert_data(smname,smdate,sposter);
+//
+//            task.diskIO().execute(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mDb.movieDao().insert(mMovie);
+//                }
+//            });
+//            Toast.makeText(Movie_details.this,
+//                    "Successfully added to favorites", Toast.LENGTH_SHORT).show();
+//
+//        }
+//
+//    }
+//
     private void setColorFavoriteButton() {
         if (mIsFavorite) {
             fabFavorites.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.red_light, null));
@@ -150,4 +311,4 @@ public class Movie_details extends AppCompatActivity {
 
         }
     }
-}
+   }

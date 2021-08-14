@@ -1,22 +1,19 @@
 package com.example.movie;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Adapter;
-import android.widget.Toast;
-
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -28,16 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Recycle_view extends AppCompatActivity {
 
@@ -45,7 +33,7 @@ public class Recycle_view extends AppCompatActivity {
     private RecyclerView recyclerview;
     private ArrayList<movie_constructor> arrayList = new ArrayList<>();
     Adapter_movie adapter_movie;
-    ArrayList<movie_constructor> filter_list = new ArrayList<>();
+   // ArrayList<movie_constructor> filter_list = new ArrayList<>();
 
 
 
@@ -60,8 +48,9 @@ public class Recycle_view extends AppCompatActivity {
         adapter_movie=new Adapter_movie(arrayList,this);
 
         RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(this);
-        //context we also pass getApplicationcontext
+
         recyclerview.setLayoutManager(layoutManager);
+
         edtsearch=findViewById(R.id.edtsearch);
 
         edtsearch.addTextChangedListener(new TextWatcher() {
@@ -110,6 +99,9 @@ public class Recycle_view extends AppCompatActivity {
     }
 
     public void menufavorites(MenuItem item) {
+
+        Intent intent =  new Intent(Recycle_view.this,favlist.class);
+        startActivity(intent);
         Toast.makeText(this, "FAV CLICKED", Toast.LENGTH_SHORT).show();
     }
 
@@ -175,16 +167,7 @@ public class Recycle_view extends AppCompatActivity {
 
             }
         });
-//        {
-//            @Override
-//            protected Map<String,String> getParams() throws AuthFailureError{
-//
-//                HashMap<String,String> hashMap=new HashMap<>();
-//               // hashMap.put("api_key","4ea6c430e33ea35846458e99db882324");
-//
-//                return hashMap;
-//            }
-//        };
+
         requestQueue.add(stringRequest);
 
     }
