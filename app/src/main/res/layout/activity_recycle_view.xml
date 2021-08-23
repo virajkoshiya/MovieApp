@@ -33,7 +33,7 @@
             android:textSize="20sp"
             android:inputType="text"
             android:selectAllOnFocus="false"
-            android:textColorLink="@color/black"
+            android:textColor="@color/white"
 
 
             >

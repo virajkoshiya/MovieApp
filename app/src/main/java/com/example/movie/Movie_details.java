@@ -105,8 +105,12 @@ Context context;
                Boolean result = dBmovies.insert_data(smname,smdate,sposter,slanguage,svote,soverview);
 
         if (result==true){
+
             Toast.makeText(Movie_details.this, "Add to favouritelist", Toast.LENGTH_SHORT).show();
-        }else {
+
+        }
+        else {
+
             Toast.makeText(Movie_details.this, "Not added ", Toast.LENGTH_SHORT).show();
         }
 
@@ -158,14 +162,7 @@ Context context;
 //        fabFavorites.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                String dsname=smname;
-//                String dmdate=smdate;
-//                String dsposter=sposter;
-//                String dslanguage=slanguage;
-//                String dsvote=svote;
-//                String dsoverview=soverview;
 //
-//              //  Boolean result = dBmovies.insert_data(smname,smdate,sposter,slanguage,svote,soverview);
 //
 //
 //            {
